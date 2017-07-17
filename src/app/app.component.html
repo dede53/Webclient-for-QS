@@ -1,0 +1,69 @@
+<!--<div (window:keydown)="onKey($event)">-->
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded fixed-top" style="background-color: #ddf;">
+        <a class="navbar-brand" routerLink="home" (click)="toogleFav(showFav)">
+            <img src="favicon.ico" width="35" height="35" alt="">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="home">
+                        Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="devices">Geräte</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="timers">Timer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/settings">Einstellungen</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" routerLink="chat">Chat</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="modal">Modal</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="date">Datepicker</a>
+                </li> -->
+            </ul>
+            <form class="form-inline my-2 my-lg-0" #f="ngForm">
+                <select name="activeUser" [(ngModel)]="selectedUser" (change)="setUser()" class="custom-select">
+                    <option *ngFor="let user of users; index as i;" [ngValue]="i">
+                        {{ user.name }}
+                    </option>
+                </select>
+            </form>
+        </div>
+    </nav>
+    <div class="favorittile" *ngIf="showFav">
+        <app-favorit-devices></app-favorit-devices>
+        <app-active-devices></app-active-devices>
+    </div>
+    <div  class="content" [class.favoritmenu]="showFav">
+        <router-outlet></router-outlet>
+    </div>
+    <div class="bg"></div>
+    <div class="loaderBg" *ngIf="loading">
+        <div class="loader">
+            <p class="">Verbinde zum Server...</p>
+            <div class="outer mx-auto">
+                <div class="inner"></div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="loaderBg">
+    <div class="loader card">
+        <div class="card-header">
+        <p class="">Verbinde zum Server...</p>
+        </div>
+        <div class="card-block">
+        <div class="outer">
+            <div class="inner"></div>
+        </div>
+        </div>
+    </div>
+    </div>-->
+<!--</div>-->

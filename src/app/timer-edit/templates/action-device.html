@@ -1,0 +1,12 @@
+<select [(ngModel)]="action.action">
+    <option disabled value="{}">Wähle ein Gerät</option>
+    <option *ngFor="let device of devicelist | ObjNgFor" [ngValue]="device">
+        {{device.name}} ({{device.Raum}})
+    </option>
+</select>
+<select name="alertType" [(ngModel)]="action.switchstatus">
+    <option disabled value="false">Wähle einen Status</option>
+    <option value="1">{{action.action.buttonLabelOn || "An"}}</option>
+    <option value="0">{{action.action.buttonLabelOff || "Aus"}}</option>
+    <option value="toggle">Umschalten</option>
+</select>

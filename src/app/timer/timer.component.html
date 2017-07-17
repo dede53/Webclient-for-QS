@@ -1,0 +1,85 @@
+<div class="card mb-3">
+    <div class="card-header">
+        <app-timer-header [timer]="timer"></app-timer-header>
+    </div>
+    <div class="card-block" [ngbCollapse]="timer.isCollapsed">
+        <form id="timer{{timer.id}}">
+            <div class="card" *ngIf="timer.variables != false">
+                <div class="card-header">
+                    Variablen/Events
+                </div>
+                <ul class="list-group list-group-flush">
+                    <div *ngFor="let variable of timer.variables | ObjNgFor">
+                            <li>
+                                <select class="form-control" [disabled]="!timer.edit">
+                                    <option *ngFor="let type of globalVar.user.variables | ObjNgFor" [ngValue]="type.id">{{type.id}}</option>
+                                </select>
+                                <select class="form-control" [disabled]="!timer.edit">
+                                    <option vlaue="==">gleich</option>
+                                    <option value="!=">ungleich</option>
+                                    <option value=">>">größer</option>
+                                    <option value="<<">kleiner</option>
+                                    <option value=">=">größer gleich</option>
+                                    <option value="<=">kleiner gleich</option>
+                                    <option value="change">sich verändert</option>
+                                </select>
+                                <input type="text" class="input-form">
+                            </li>
+<!--                            <div *ngFor="let variab of variable" [ngSwitch]="variab.mode">
+                                <app-timer-variable-onchange *ngSwitchCase="'onChange'" [variable]="variab" [edit]="timer.edit"></app-timer-variable-onchange>
+                                <app-timer-variable-match *ngSwitchCase="'match'" [variable]="variab" [edit]="timer.edit"></app-timer-variable-match>
+                            </div>-->
+                    </div>
+                    <button class="list-group-item list-group-item-success" *ngIf="timer.edit">
+                        Hinzufügen
+                    </button>
+                </ul>
+            </div>
+            <br>
+            <div class="card" *ngIf="timer.conditions != false">
+                <div class="card-header">
+                    Bedingungen
+                </div>
+                <ul class="list-group list-group-flush">
+                    <div class="" *ngFor="let condition of timer.conditions | ObjNgFor; index as i;">
+                        <div *ngFor="let con of condition" [ngSwitch]="con.type">
+                            <app-timer-random [condition]="con" [edit]="timer.edit" *ngSwitchCase="'random'"></app-timer-random>
+                            <app-timer-time [condition]="con" [edit]="timer.edit" [index]="i" *ngSwitchCase="'time'"></app-timer-time>
+                            <!--<app-timer-variable [condition]="con" [edit]="timer.edit" *ngSwitchCase="'variable'"></app-timer-variable>-->
+                            <li *ngSwitchDefault>{{con | json}}</li>
+                        </div>
+                    </div>
+                    <button class="list-group-item list-group-item-success" *ngIf="timer.edit">
+                        Hinzufügen
+                    </button>
+                </ul>
+            </div>
+            <br>
+            <div class="card" *ngIf="timer.actions != false">
+                <div class="card-header">
+                    Aktionen
+                </div>
+                <ul class="list-group list-group-flush">
+                    <div class="" *ngFor="let action of timer.actions | ObjNgFor">
+                        <li class="list-group-item" *ngFor="let act of action; index as i;" [ngSwitch]="act.type">
+                                <app-timer-alert class="w-100" *ngSwitchCase="'alerts'" [index]="i" [action]="act" [timer]="timer"></app-timer-alert>
+                                <app-timer-device class="w-100" *ngSwitchCase="'devices'" [index]="i" [action]="act" [timer]="timer"></app-timer-device>
+                                <app-timer-group class="w-100" *ngSwitchCase="'groups'" [index]="i" [action]="act" [timer]="timer"></app-timer-group>
+                                <div  *ngSwitchDefault>Sonstiges:{{act | json}}</div>
+                        </li>
+                    </div>
+                    <li class="list-group-item" *ngIf="timer.edit">
+                        <form class="form-inline">
+                        <select class="form-control mr-sm-2" name="addActionType" [(ngModel)]="addActionType">
+                            <option *ngFor="let action of actions" [ngValue]="action.value">{{action.name}}</option>
+                        </select>
+                        <button class="btn btn-success" (click)="addAction(timer.id, addActionType)">
+                            Hinzufügen
+                        </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</div>

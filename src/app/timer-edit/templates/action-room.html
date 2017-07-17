@@ -1,0 +1,13 @@
+Den Raum
+<select [(ngModel)]="action.action">
+    <option disabled value="false">Wähle einen Raum</option>
+    <option *ngFor="let room of devices | ObjNgFor" [ngValue]="room">
+        {{room.room.name}}
+    </option>
+</select>
+<select name="alertType" [(ngModel)]="action.switchstatus">
+    <option disabled value="false">Wähle einen Status</option>
+    <option value="1">Einschalten</option>
+    <option value="0">Ausschalten</option>
+    <option value="toggle">Umschalten</option>
+</select>

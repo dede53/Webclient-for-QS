@@ -1,0 +1,54 @@
+<div class="card">
+    <!--<div class="card-header">-->
+    <!--</div>-->
+    <div class="card-block">
+        <h3>Countdowns</h3>
+        <ul class="list-group" style="max-height:230px; overflow:auto;">
+            <li class="list-group-item d-flex justify-content-start" *ngFor="let countdown of globalVar.user.countdowns | ObjNgFor">
+                <span>{{countdown.device.name}} ({{countdown.device.Raum}}) um {{countdown.time | date:'HH:mm'}} {{countdown.status ? countdown.device.buttonLabelOn :  countdown.device.buttonLabelOff}}</span>
+                <button class="btn btn-sm btn-danger ml-auto" (click)="remove(countdown.id)" >Löschen</button>
+                
+            </li>
+            <li class="list-group-item list-group-item-info" *ngIf="globalVar.user.countdowns | isEmpty">
+                Keine Countdowns gesetzt
+            </li>
+        </ul>
+        <form style="text-align:right;" [formGroup]="myForm" (ngSubmit)="add(myForm.value, myForm.valid)">
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">Gerät</span>
+                <select
+                    class="form-control"
+                    formControlName="device"
+                    aria-describedby="btnGroupAddon">
+                    <option value="">Wähle ein Gerät</option>
+                    <option *ngFor="let value of globalVar.user.devicelist | ObjNgFor" [ngValue]="value">{{value.name}} ({{value.Raum}})</option>
+                </select>
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">Minuten: {{myForm.value.time}}</span>
+                <input
+                    formControlName="time"
+                    style="width:calc(100% - 17px); height:40px;"
+                    type="range"
+                    min="1"
+                    max="180"
+                    class="form-control"
+                    aria-describedby="btnGroupAddon2">
+            </div>
+            <br>
+            <div class="btn-group btn-group-sm" ngbRadioGroup formControlName="status" role="group" *ngIf="myForm.value.device.buttonLabelOn">
+                <label class="btn btn-secondary">
+                    <input type="radio" [value]="1">{{myForm.value.device.buttonLabelOn}}
+                </label>
+                <label class="btn btn-secondary">
+                    <input type="radio" [value]="0">{{myForm.value.device.buttonLabelOff}}
+                </label>
+            </div>
+            <label class="btn-group btn-group-sm">
+                <button type="submit" class="btn btn-secondary ">Speichern</button>
+            </label>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+<h3>Aktive Geräte</h3>
+<ul class="list-group">
+  <li class="" *ngFor=" let device of globalVar.user.active;">
+    {{device.name}}({{device.room}})
+  </li>
+</ul>
+<button class="btnOn buttonL" (click)='switchAll("1")'>Alle ein</button>
+<button class="btnOff buttonL" (click)='switchAll("0")'>Alle aus</button>

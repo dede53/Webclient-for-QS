@@ -1,0 +1,6 @@
+<li class="list-group-item" >
+    Löse aus sobald sich die Variable     
+    <select [(ngModel)]="variable.id" class="form-control" [disabled]="!edit">
+        <option *ngFor="let type of globalVar.user.variables | ObjNgFor" [ngValue]="type.id">{{type.id}}</option>
+    </select> ändert.
+</li>

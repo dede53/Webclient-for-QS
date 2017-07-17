@@ -1,0 +1,32 @@
+<div class="test d-flex justify-content-end">
+	<div class="mr-auto devicename">{{device.name}}</div>
+	<div style="display: flex; height: 40px;">
+		<div class="mr-auto devicename">{{device.status == 1 ? 'geschlossen' : 'geöffnet'}}</div>
+		<button
+			class="btnGrey unselectable"
+            (click)="switchDevice({id: device.deviceid, status: 1})"
+			>
+				<!-- style="fill:#389B20" -->
+
+			<p class="buttonLabel">
+				{{device.buttonLabelOn}}
+			</p>
+		</button>
+		<button
+			class="btnGrey unselectable"
+            (click)="switchDevice({id: device.deviceid, status: 'stop'})"
+			>
+			<p class="buttonLabel">
+				Stop
+			</p>
+		</button>
+		<button
+			class="btnGrey unselectable"
+            (click)="switchDevice({id: device.deviceid, status: 0})"
+			>
+			<p class="buttonLabel">
+				{{device.buttonLabelOff}}
+			</p>
+		</button>
+	</div>
+</div>

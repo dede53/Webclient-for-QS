@@ -1,0 +1,25 @@
+<div class="test d-flex justify-content-end">
+	<div class="mr-auto devicename">{{device.name}}</div>
+	<div style="display: flex;">
+		<button
+			class="btnOn unselectable d-flex justify-content-center"
+            (click)="switchDevice({id: device.deviceid, status: 1})"
+			>
+            <i *ngIf="device.showStatus" class="material-icons" style="margin:auto 0; color:#4dad4d; size:10px" title="Bearbeiten">check_box{{device.status == "0" ? "_outline_blank":""}}</i>
+			<p class="buttonLabel">
+			<!-- style="fill:#389B20" -->
+
+				{{device.buttonLabelOn}}
+			</p>
+		</button>
+		<button
+			class="btnOff unselectable d-flex justify-content-center"
+            (click)="switchDevice({id: device.deviceid, status: 0})"
+			>
+            <i *ngIf="device.showStatus" class="material-icons" style="margin:auto 0; color:#fc6b6b;" title="Bearbeiten">check_box{{device.status == "0" ? "":"_outline_blank"}}</i>
+			<p class="buttonLabel">
+				{{device.buttonLabelOff}}
+			</p>
+		</button>
+	</div>
+</div>

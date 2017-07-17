@@ -1,0 +1,9 @@
+<div class="card" style="margin-bottom: .75rem;">
+    <div class="card-block">
+        <div class="d-flex justify-content-between">
+            <h3>Timer</h3>
+            <i class="material-icons" title="Hinzufügen" (click)="addTimer()">alarm_add</i>
+        </div>
+        <app-timer-show [timer]="timer" *ngFor="let timer of globalVar.user.timers | ObjNgFor"></app-timer-show> 
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="card">
+  <div class="card-block">
+    <h3>Gruppen</h3>
+    <ul>
+      <li *ngFor="let group of globalVar.user.groups | ObjNgFor">
+        <div class="d-flex justify-content-end">
+          <div class="devicename" style="text-overflow:ellipsis; overflow:hidden;cursor:pointer; margin:auto auto auto 0 !important;">
+              {{group.name}}
+          </div>
+          <div style="display: flex;">
+            <button class="btnOn buttonM" (click)='switchGroup($event, {"group":group,"status":"1"})' >An</button>
+            <button class="btnOff buttonM" (click)='switchGroup($event, {"group":group,"status":"0"})' >Aus</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

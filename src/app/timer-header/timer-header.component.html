@@ -1,0 +1,15 @@
+<div class="d-flex justify-content-end">
+    <div class="devicename" (click)="timer.isCollapsed = !timer.isCollapsed"
+          [attr.aria-expanded]="!timer.isCollapsed" style="text-overflow:ellipsis; overflow:hidden;cursor:pointer; margin:auto auto auto 0 !important;">
+        {{timer.name}}
+    </div>
+    <div style="display: flex;">
+        <i class="material-icons" [ngClass]="{'activeTimer': timer.active == 'true', 'inactiveTimer': timer.active =='false'}" title="Aktivieren/Deaktivieren" (click)="$event.preventDefault();switchTimer(timer);$event.stopPropagation();">alarm_{{timer.active == "true" ? "on" : "off"}}</i>
+        <i class="material-icons" style="color:#666;"  title="Bearbeiten" (click)="$event.preventDefault();editTimer(timer.id);$event.stopPropagation();">mode_edit</i> 
+        <ng-template #popContent>
+            <button class="btn btn-danger" (click)="$event.preventDefault();removeTimer(timer);$event.stopPropagation();">Löschen</button>
+            <button class="btn btn-success" (click)="$event.preventDefault();p.close();$event.stopPropagation();">Abbrechen</button>
+        </ng-template> 
+        <i class="material-icons" style="color:#FF8000;" title="Löschen" container="body" #p="ngbPopover" [ngbPopover]="popContent" placement="left" popoverTitle="Willst du den Timer wirklich löschen?">delete</i>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+.edit {
+    /*height: 30px;*/
+    border: none!important;
+    background: transparent;
+    pointer-events: none;
+    color: rgb(41, 43, 44);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-size:1rem;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.form-control:disabled {
+    border: none!important;
+    background: transparent;
+}
+.red{
+    background:red;
+    border-radius: 90;
+    width:40px;
+    height: 40px;
+    -moz-border-radius: 50px/50px;
+    -webkit-border-radius: 50px 50px;
+    border-radius: 50px/50px;
+    border:none;
+}
+i{
+    position:relative;
+    top:7px;
+    left:5px;
+}

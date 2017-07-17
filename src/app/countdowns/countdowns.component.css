@@ -1,0 +1,16 @@
+ul, ol{
+    list-style-type: none;
+    padding: 0px;
+    margin:0px;
+    list-style-type: none;
+}
+input[type="range"]{
+	border-radius: 4px;
+}
+input[type="range"]:hover{
+	cursor:pointer;
+    height: 40px;
+}
+.btn{
+    cursor:pointer;
+}

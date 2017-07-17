@@ -1,0 +1,115 @@
+<div class="card mb-3">
+    <div class="card-header">
+        <input [(ngModel)]="timer.name" class="form-control">
+    </div>
+    <div class="card-block">
+        <div class="card">
+            <div class="card-header">
+                Variablen/Events
+            </div>
+            <ul class="list-group list-group-flush">
+                <div *ngFor="let variable of timer.variables | ObjNgFor">
+                    <div *ngFor="let variab of variable; index as i;">
+                        <li class="list-group-item d-flex justify-content-start">
+                            Löse aus sobald die Variable 
+                            <i class="ml-auto material-icons" (click)="removeVariable(variab.id, i)">delete</i>
+                            <select name="variable" [(ngModel)]="variab.id" class="form-control">
+                                <option *ngFor="let type of variables | ObjNgFor" [ngValue]="type.id">{{type.name}}({{type.id}})</option>
+                            </select>
+                            <select name="variableMode" [(ngModel)]="variab.mode" class="form-control">
+                                <option *ngFor="let mode of variableModes" [ngValue]="mode.value">{{mode.name}}</option>
+                            </select>
+                            <input type="text" class="form-control" [(ngModel)]="variab.value">
+
+                        </li>
+                    </div>
+                </div>
+                 <li class="list-group-item">
+                    <form class="form-inline">
+                        <select name="addVariableType" [(ngModel)]="addVariableType" class="form-control mr-sm-2">
+                            <option value="false" disabled>Wähle eine Variable</option>
+                            <option *ngFor="let type of variables | ObjNgFor" [ngValue]="type.id">{{type.name}}({{type.id}})</option>
+                        </select>
+                        <button class="btn btn-success" (click)="addVariable(addVariableType)">
+                            Hinzufügen
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div> 
+        <br>
+        <div class="card">
+            <div class="card-header">
+                Bedingungen
+            </div>
+            <ul class="list-group list-group-flush">
+                <div *ngIf="!timer.conditions == false">
+                    <li class="list-group-item d-flex justify-content-start" *ngFor="let con of timer.conditions" [ngSwitch]="con.type">
+                        <div *ngSwitchCase="'random'" class="d-flex">
+                            Zufällig zwischen <ngb-timepicker [(ngModel)]="con.start" [spinners]="false"></ngb-timepicker> und <ngb-timepicker [(ngModel)]="con.stop" [spinners]="false"></ngb-timepicker>
+                        </div>
+                        <div *ngSwitchCase="'variable'" class="w-100">
+                            Löse aus sobald die Variable
+                            <select name="variable" [(ngModel)]="con.id" class="form-control">
+                                <option *ngFor="let type of variables | ObjNgFor" [ngValue]="type.id">{{type.name}}({{type.id}})</option>
+                            </select>
+                            <select name="variableMode" [(ngModel)]="con.mode" class="form-control">
+                                <option *ngFor="let mode of variableModes" [ngValue]="mode.value">{{mode.name}}</option>
+                            </select>
+                            <input type="text" class="form-control" [(ngModel)]="con.value">
+                        </div>
+                        <div *ngSwitchCase="'sun'">{{con.sun}} {{con.offset.unit}}{{con.offset.minutes}} {{con.offset.min}} {{con.offset.max}}</div> 
+                        <div *ngSwitchCase="'range'"  class="d-flex">
+                            Von <ngb-timepicker [(ngModel)]="con.start" [spinners]="false"></ngb-timepicker> bis <ngb-timepicker [(ngModel)]="con.stop" [spinners]="false"></ngb-timepicker>
+                        </div>
+                        <div *ngSwitchDefault>{{con | json}}</div>
+                        <i class="ml-auto material-icons" (click)="removeCondition(i)">delete</i>
+                    </li>
+                </div>
+                <li class="list-group-item">
+                    <form class="form-inline">
+                        <select name="addConditionType" [(ngModel)]="addConditionType" class="form-control mr-sm-2">
+                            <option value="false" disabled>Wähle eine Bedingung</option>
+                            <option *ngFor="let type of conditions" [ngValue]="type.value">{{type.name}}</option>
+                        </select>
+                        <button class="btn btn-success" (click)="addCondition(addConditionType)">
+                            Hinzufügen
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+        <br>
+        <div class="card">
+            <div class="card-header">
+                Aktionen
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-start" *ngFor="let act of  timer.actions; index as i;" [ngSwitch]="act.type">
+                        <app-timer-device *ngSwitchCase="'device'" [action]="act"></app-timer-device>
+                        <app-timer-group *ngSwitchCase="'group'" [action]="act"></app-timer-group>
+                        <app-timer-alert *ngSwitchCase="'alert'" [action]="act"></app-timer-alert>
+                        <app-timer-room *ngSwitchCase="'room'" [action]="act"></app-timer-room>
+                        <div  *ngSwitchDefault>{{act.type}}:{{act | json}}</div>
+                        <i class="ml-auto material-icons" (click)="removeAction(i)">delete</i>
+                </li>
+                <li class="list-group-item">
+                    <form class="form-inline">
+                        <select class="form-control mr-sm-2" name="addActionType" [(ngModel)]="addActionType">
+                            <option disabled value="false">Action auswählen</option>
+                            <option *ngFor="let action of actions" [ngValue]="action.value">{{action.name}}</option>
+                        </select>
+                        <button class="btn btn-success" (click)="addAction(addActionType)">
+                            Hinzufügen
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+        <br>
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-success" (click)="save()">speichern</button>
+            <button class="btn btn-danger" (click)="cancel()">abbrechen</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="card mb-3">
+    <div class="card-header">
+        <app-timer-header [timer]="timer"></app-timer-header>
+    </div>
+    <div class="card-block" [ngbCollapse]="timer.isCollapsed">
+        <div class="card" *ngIf="timer.variables != false">
+            <div class="card-header">
+                Variablen/Events
+            </div>
+            <ul class="list-group list-group-flush">
+                <div *ngFor="let variable of timer.variables | ObjNgFor">
+                    <div *ngFor="let variab of variable">
+                        <li class="list-group-item">
+                            Löse aus sobald die Variable {{variab.id}} {{variab.mode}} {{variab.status}}
+                        </li>
+                    </div>
+                </div>
+            </ul>
+        </div>
+        <br>
+        <div class="card" *ngIf="timer.conditions != false">
+            <div class="card-header">
+                Bedingungen
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" *ngFor="let con of timer.conditions" [ngSwitch]="con.type">
+                    <div *ngSwitchCase="'random'">Zufällig zwischen {{con.start.hour}}:{{con.start.minute}}h und {{con.stop.hour}}:{{con.stop.minute}}h</div>
+                    <div *ngSwitchCase="'range'">Zwischen {{con.start.hour}}:{{con.start.minute}}h und {{con.stop.hour}}:{{con.stop.minute}}h</div>
+                    <div *ngSwitchCase="'variable'">Wenn der Wert der Variablen {{con.id}} {{con.mode}} {{con.value}} ist</div>
+                    <div *ngSwitchCase="'sun'">{{con.sun}} {{con.offset.unit}}{{con.offset.minutes}} {{con.offset.min}} {{con.offset.max}}</div> 
+                    <div *ngSwitchDefault>{{con | json}}</div>
+                </li>
+            </ul>
+        </div>
+        <br>
+        <div class="card" *ngIf="timer.actions != false">
+            <div class="card-header">
+                Aktionen
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" *ngFor="let act of  timer.actions; index as i;" [ngSwitch]="act.type">
+                    <div *ngSwitchCase="'device'">{{act.action.name}}({{act.action.Raum}}) {{act.switchstatus == "1" ? act.action.buttonLabelOn : act.action.buttonLabelOff}}</div>
+                    <div *ngSwitchCase="'group'">{{act.action.name}}({{act.action.user}}) {{act.switchstatus == "1" ? "Ein" : "Aus"}}</div>
+                    <div *ngSwitchCase="'alert'">
+                        <div class="w-100">
+                                Titel: {{act.action.title}}
+                        </div>
+                        <small class="mb-1">
+                            Nachricht: {{act.action.message}}
+                        </small>
+                        <small class="mb-1">
+                            Type: {{act.action.type}}
+                        </small>
+                        <small class="mb-1">
+                            Benutzer: {{act.action.user}}
+                        </small>
+                        <small class="mb-1" ng-show="action.activeTimeout">
+                            Timeout: {{act.timeout}} Sekunden
+                        </small>
+                    </div>
+                    <div *ngSwitchCase="'room'">{{act.action | json}}</div>
+                    <div  *ngSwitchDefault>{{act.type}}:{{act | json}}</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

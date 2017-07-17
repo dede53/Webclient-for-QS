@@ -1,0 +1,86 @@
+<div class="flex-column">
+<!--    <div class="d-flex w-100 justify-content-between">
+            Titel: {{action.action.title}}
+            <button *ngIf="edit" class="btn btn-danger btn-sm" ng-click="removeAction({action:action, type:'alerts'})">Löschen</button>
+    </div>-->
+<!--<div class="container">
+    Alert
+    <div class="row">
+        <label for="example-search-input" class="col-12 col-md-auto col-form-label" >Titel:</label>
+        <div class="col">
+            <input value="{{action.action.title}}" class="form-contol col-form-label w-100" type="text" [disabled]="!edit" [ngClass]="{'edit': !edit}">
+        </div>
+    </div>
+    <div class="row">
+        <label for="example-search-input" class="col-12 col-md-auto col-form-label">Nachricht:</label>
+        <div class="col">
+            <input value="{{action.action.message}}" class="form-contol col-form-label w-100" type="text" [disabled]="!edit" [ngClass]="{'edit': !edit}">
+        </div>
+    </div>
+    <div class="row w-100">
+        <label for="example-search-input" class="col-12 col-md-auto m-0 col-form-label" >Type:</label>
+        <div class="col">
+            <select name="alertType" [(ngModel)]="action.action.type" class="col-form-label" [disabled]="!edit" [ngClass]="{'edit': !edit}">
+                <option *ngFor="let type of alertTypen" [ngValue]="type.value">{{type.name}}</option>
+            </select>
+        </div>
+    </div>
+</div>-->
+<!--    <small class="mb-1">
+        Type: {{action.action.type}}
+    </small>
+    <small class="mb-1">
+        Benutzer: {{action.action.user}}
+    </small>
+    <small class="mb-1" *ngIf="action.activeTimeout">
+        Timeout: {{action.timeout}} Sekunden
+    </small>-->
+</div>
+<!--<div class="card">
+    <div class="card-header">Alert</div>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <div class="row">
+                <label for="example-search-input" class="col-12 col-md-auto col-form-label" >Titel:</label>
+                <div class="col">
+                    <input value="{{action.action.title}}" class="form-contol col-form-label w-100" type="text" [disabled]="!edit" [ngClass]="{'edit': !edit}">
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="row">
+                <label for="example-search-input" class="col-12 col-md-auto col-form-label">Nachricht:</label>
+                <div class="col">
+                    <input value="{{action.action.message}}" class="form-contol col-form-label w-100" type="text" [disabled]="!edit" [ngClass]="{'edit': !edit}">
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="row">
+                <label for="example-search-input" class="col-12 col-md-auto m-0 col-form-label" >Type:</label>
+                <div class="col">
+                    <select name="alertType" [(ngModel)]="action.action.type" class="col-form-label" [disabled]="!edit" [ngClass]="{'edit': !edit}">
+                        <option *ngFor="let type of alertTypen" [ngValue]="type.value">{{type.name}}</option>
+                    </select>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>-->
+<div class="card card-{{action.action.type}}">
+    <div class="card-header d-flex justify-content-end">
+            <input [(ngModel)]="action.action.title" class="mr-auto" type="text" [disabled]="!timer.edit" [ngClass]="{'edit': !timer.edit}" placeholder="Titel">
+            <select name="activeUser" [(ngModel)]="action.action.user" [disabled]="!timer.edit" [ngClass]="{'edit': !timer.edit}">
+                    <option *ngFor="let user of globalVar.user.users;" [ngValue]="user.name">
+                        {{ user.name }}
+                    </option>
+                </select>
+            <select name="alertType" [(ngModel)]="action.action.type" class="" [disabled]="!timer.edit" [ngClass]="{'edit': !timer.edit}">
+                <option *ngFor="let type of alertTypen" [ngValue]="type.value">{{type.name}}</option>
+            </select>
+            <i class="material-icons" style="margin:auto 0;" (click)="globalVar.deleteAction(timer.id, action.type, index)">delete</i>
+    </div>
+    <p class="card-block card-text text-xs-center">
+        <input [(ngModel)]="action.action.message" class="col-form-label w-100" type="text" [disabled]="!timer.edit" [ngClass]="{'edit': !timer.edit}" placeholder="Nachricht">
+    </p>
+</div>

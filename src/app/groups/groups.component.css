@@ -1,0 +1,30 @@
+ul, ol{
+	list-style-type: none;
+	padding: 0px;
+	margin:0px;
+	list-style-type: none;
+}
+.devicename{
+	white-space: nowrap; 
+	text-align: inherit;
+	margin: auto 0;
+	color: #292b2c;
+}
+.btnOn{
+	background-color:#c0ffc0;
+	/*width: 25%;*/
+}
+.btnOff{
+	background-color:#ffc0c0;
+	/*width: 25%;*/
+}
+button{
+	height: 45px;
+	cursor:pointer;
+	margin:2px 1px 2px 0px;
+	min-width:70px;
+	box-sizing: initial;
+	border:0px;
+	border-radius:0px;
+	padding:0;
+}

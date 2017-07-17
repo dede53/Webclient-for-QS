@@ -1,0 +1,9 @@
+<li class="list-group-item">
+    Löse aus wenn die Variable
+    <select name="alertType" [(ngModel)]="variable.id" class="form-control" [disabled]="!edit">
+        <option *ngFor="let type of globalVar.user.variables | ObjNgFor" [ngValue]="type.id">{{type.id}}</option>
+    </select>
+    den Wert
+    <input value="{{variable.status}}" class="form-control col-form-label" type="text" [disabled]="!edit">
+    hat.
+</li>

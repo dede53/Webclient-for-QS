@@ -1,0 +1,17 @@
+<!--<div>{{action.action.name}}({{action.action.Raum}}) {{action.switchstatus == "1" ? action.action.buttonLabelOn : action.action.buttonLabelOff}}</div>-->
+<div class="d-flex justify-content-start">
+    <select [(ngModel)]="action.action.deviceid" (change)="updateDevice()" [disabled]="!timer.edit" [ngClass]="{'edit': !timer.edit}">
+        <option *ngFor="let device of globalVar.user.devicelist | ObjNgFor" [ngValue]="device.deviceid">
+            {{device.name}} ({{device.Raum}})
+        </option>
+    </select>
+    <select name="alertType" [(ngModel)]="action.switchstatus" class="" [disabled]="!timer.edit" [ngClass]="{'edit': !timer.edit}">
+        <option value="1">{{action.action.buttonLabelOn}}</option>
+        <option value="0">{{action.action.buttonLabelOff}}</option>
+        <option value="toggle">Umschalten</option>
+    </select>
+    <div style="margin: -5px 0 auto auto;display: flex;" *ngIf="timer.edit">
+        <i class="material-icons" (click)="globalVar.deleteAction(timer.id, action.type, index)">delete</i>
+    </div>
+</div>
+    <!--{{action.action | json}}-->

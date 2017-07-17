@@ -1,0 +1,89 @@
+<li class="list-group-item d-flex justify-content-between">
+<!--    <div [ngSwitch]="condition.time">
+        <div *ngSwitchCase="'sunset'"><span *ngIf="condition.offset.number > 0">{{condition.offset.number}} Minuten {{condition.offset.unit | TimerTime}}</span>Sonnenuntergang</div>
+        <div *ngSwitchCase="'sunrise'"><span *ngIf="condition.offset.number > 0">{{condition.offset.number}} Minuten {{condition.offset.unit | TimerTime}}</span> Sonnenaufgang</div>
+        <div *ngSwitchDefault>Um {{condition.time}}</div>
+    </div>-->
+    <!--{{condition | TimerTime}}<button class="btn btn-danger btn-sm" *ngIf="edit">Löschen</button>-->
+    
+    <!--Left-->
+    <div>
+            {{condition | TimerTime}}
+            <br>
+            <!--{{condition|json}}-->
+            <div [(ngModel)]="condition.time" *ngIf="edit" ngbRadioGroup name="type">
+                <label class="btn btn-sm btn-secondary">
+                    <input type="radio" [value]="realTime">Uhrzeit
+                </label>
+                <label class="btn btn-sm btn-secondary">
+                    <input type="radio" [value]="'sunrise'">Sonnenaufgang
+                </label>
+                <label class="btn btn-sm btn-secondary">
+                    <input type="radio" [value]="'sunset'">Sonnenuntergang
+                </label>
+            </div>
+                    
+            <ngb-timepicker *ngIf="edit && condition.time != 'sunrise' && condition.time != 'sunset'" [(ngModel)]="time" [spinners]="false" (change)="setTime()"></ngb-timepicker>
+    <!--    <div class="col text-right">
+            <div ngbDropdown [up]="true" class="d-inline-block">
+                <div class="red" ngbDropdownToggle><i class="material-icons">more_vert</i></div>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownBasic2">
+                    <input type="checkbox">
+                    <div class="dropdown-item form-check mb-2 mr-sm-2 mb-sm-0">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox"> Remember me
+                        </label>
+                    </div>
+                    <button class="dropdown-item">Action - 1</button>
+                    <button class="dropdown-item">Another Action</button>
+                    <button class="dropdown-item">Something else is here</button>
+                </div>
+            </div>
+        </div>-->
+    </div>
+    <!--Rechts-->
+    <div>
+        <ng-template #popContent>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" [(ngModel)]="condition.offset.active" type="checkbox">
+                    Zeitverschiebung nach
+                </label>
+            </div>
+            <div *ngIf="condition.offset.active">
+                <div [(ngModel)]="condition.offset.random" ngbRadioGroup name="type">
+                    <label class="btn btn-sm btn-secondary">
+                        <input type="radio" [value]="true">Zufall
+                    </label>
+                    <label class="btn btn-sm btn-secondary">
+                        <input type="radio" [value]="false">fest Vorgegeben
+                    </label>
+                </div>
+                <div [(ngModel)]="condition.offset.after" ngbRadioGroup name="type">
+                    <label class="btn btn-sm btn-secondary">
+                        <input type="radio" [value]="true">hinten
+                    </label>
+                    <label class="btn btn-sm btn-secondary">
+                        <input type="radio" [value]="false">vorne
+                    </label>
+                </div>
+                <div class="form-group" *ngIf="condition.offset.random">
+                    <label for="formGroupExampleInput2">Minimale Zeitverschiebung:</label>
+                    <input type="number" class="form-control" [(ngModel)]="condition.offset.min" id="formGroupExampleInput2" placeholder="1">
+                </div>
+                <div class="form-group" *ngIf="condition.offset.random">
+                    <label for="formGroupExampleInput2">Maximale Zeitverschiebung:</label>
+                    <input type="number" class="form-control" [(ngModel)]="condition.offset.max" id="formGroupExampleInput2" placeholder="18">
+                </div>
+                <div class="form-group" *ngIf="!condition.offset.random">
+                    <label for="formGroupExampleInput2">Minuten:</label>
+                    <input type="number" class="form-control" [(ngModel)]="condition.offset.minutes" id="formGroupExampleInput2" placeholder="18">
+                </div>
+            </div>
+            <button class="btn btn-success btn-sm">Speichern!</button>
+        </ng-template>
+        <div class="red" [ngbPopover]="popContent" placement="left" popoverTitle="Einstellungen" *ngIf="edit">
+            <i class="material-icons">more_vert</i>
+        </div>
+    </div>
+</li>

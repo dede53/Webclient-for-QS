@@ -1,0 +1,13 @@
+Die Gruppe
+<select [(ngModel)]="action.action">
+    <option disabled value="false">Wähle eine Gruppe</option>
+    <option *ngFor="let group of groups | ObjNgFor" [ngValue]="group">
+        {{group.name}} von {{group.user}}
+    </option>
+</select>
+<select name="alertType" [(ngModel)]="action.switchstatus">
+    <option disabled value="false">Wähle einen Status</option>
+    <option value="1">Einschalten</option>
+    <option value="0">Ausschalten</option>
+    <option value="toggle">Umschalten</option>
+</select>
