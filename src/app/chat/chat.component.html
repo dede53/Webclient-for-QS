@@ -4,9 +4,9 @@
 	<div class="card-block">
 		<h3>Chat</h3>
 		<ul class="list-group" style="max-height:230px; overflow:auto;">
-			<li class="" *ngFor="let message of globalVar.user.chatMessages" style="margin:0!important;">
+			<li class="m-0" *ngFor="let message of globalVar.user.chatMessages">
                 <p class="sliderText" id="{{message.time}}">
-                    <span id="italic">{{message.time | date:'d. MMM | HH:mm'}}</span>{{message.author}}:
+                    <span id="italic" title="{{message.time | date:'HH:mm'}}">{{message.time | date:'d. MMM'}}:</span> {{message.author}}:
 				    <span *ngIf="message.type == '1'">
                         {{message.message}}
 				    </span>
@@ -28,12 +28,12 @@
 		<form style="text-align:right;">
 			<input type="text" class="form-control"	name="message"	id="message" 	[(ngModel)]="message" placeholder="Neue Nachricht eingeben" >
 			<br>
-            <div [(ngModel)]="type" ngbRadioGroup name="type">
-                <label class="btn btn-sm btn-secondary">
-                    <input type="radio" [value]="1">Text
+            <div class="btn-group btn-group-sm" ngbRadioGroup name="radioBasic" [(ngModel)]="type">
+                <label ngbButtonLabel class="btn-secondary">
+                    <input ngbButton type="radio" [value]="1"> Text
                 </label>
-                <label class="btn btn-sm btn-secondary">
-                    <input type="radio" [value]="0">Link
+                <label ngbButtonLabel class="btn-secondary">
+                    <input ngbButton type="radio" value="2"> Link
                 </label>
             </div>
             <label class="btn-group btn-group-sm">

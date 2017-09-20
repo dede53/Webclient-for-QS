@@ -11,7 +11,7 @@
                 <div *ngFor="let variable of timer.variables | ObjNgFor">
                     <div *ngFor="let variab of variable">
                         <li class="list-group-item">
-                            Löse aus sobald die Variable {{variab.id}} {{variab.mode}} {{variab.status}}
+                            Löse aus sobald die Variable {{variab.id}} {{variab.mode}} {{variab.value}}
                         </li>
                     </div>
                 </div>
@@ -25,20 +25,30 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item" *ngFor="let con of timer.conditions" [ngSwitch]="con.type">
                     <div *ngSwitchCase="'random'">Zufällig zwischen {{con.start.hour}}:{{con.start.minute}}h und {{con.stop.hour}}:{{con.stop.minute}}h</div>
+                    <div *ngSwitchCase="'time'">Um {{con.time.hour}}:{{con.time.minute}}h</div>
                     <div *ngSwitchCase="'range'">Zwischen {{con.start.hour}}:{{con.start.minute}}h und {{con.stop.hour}}:{{con.stop.minute}}h</div>
                     <div *ngSwitchCase="'variable'">Wenn der Wert der Variablen {{con.id}} {{con.mode}} {{con.value}} ist</div>
-                    <div *ngSwitchCase="'sun'">{{con.sun}} {{con.offset.unit}}{{con.offset.minutes}} {{con.offset.min}} {{con.offset.max}}</div> 
+                    <div *ngSwitchCase="'sun'">
+                        {{con.sun == "sunset" ? "Sonnenuntergang" : "Sonnenaufgang"}}
+                        <div *ngIf="con.offset.active">{{con.offset.minutes}} {{con.offset.random}}{{con.offset.after}} {{con.offset.min}} {{con.offset.max}}</div> 
+                    </div>
+                    <div *ngSwitchCase="'weekdays'">
+                        <span [ngClass]='day ? "green" :  "grey"'  *ngFor="let day of con.weekdays; index as i;">
+                            {{weekdays[i]}}
+                        </span>
+                    </div>
                     <div *ngSwitchDefault>{{con | json}}</div>
                 </li>
             </ul>
         </div>
         <br>
         <div class="card" *ngIf="timer.actions != false">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between">
                 Aktionen
+                <i (click)='switchAll("timers", timer)' title="Aktionen zum testen jetzt ausführen!" class="material-icons">play_circle_outline</i>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item" *ngFor="let act of  timer.actions; index as i;" [ngSwitch]="act.type">
+                <li class="list-group-item justify-content-start" *ngFor="let act of  timer.actions; index as i;" [ngSwitch]="act.type">
                     <div *ngSwitchCase="'device'">{{act.action.name}}({{act.action.Raum}}) {{act.switchstatus == "1" ? act.action.buttonLabelOn : act.action.buttonLabelOff}}</div>
                     <div *ngSwitchCase="'group'">{{act.action.name}}({{act.action.user}}) {{act.switchstatus == "1" ? "Ein" : "Aus"}}</div>
                     <div *ngSwitchCase="'alert'">
@@ -58,8 +68,29 @@
                             Timeout: {{act.timeout}} Sekunden
                         </small>
                     </div>
-                    <div *ngSwitchCase="'room'">{{act.action | json}}</div>
+                    <div *ngSwitchCase="'setVariable'">
+                        Variable {{act.action.name}}({{act.action.id}}) auf {{act.action.status}}setzen
+                    </div>
+                    <div *ngSwitchCase="'room'">Raum {{act.action.room.name}} {{act.switchstatus == "1" ? "Ein" : "Aus"}}</div>
+                    <div *ngSwitchCase="'url'">
+                        {{act.action.url}}<br>
+                        <small class="mb-1" *ngIf="act.timeout > 0">
+                            Timeout: {{act.timeout}} Sekunden
+                        </small>
+                    </div>
                     <div  *ngSwitchDefault>{{act.type}}:{{act | json}}</div>
+                    <div class="ml-auto" *ngIf="act.offset.active">
+                        <span *ngIf="act.offset.random">
+                            zufällig zwischen {{act.offset.min}} und {{act.offset.max}} Minuten
+                        </span>
+                        <span *ngIf="!act.offset.random">
+                            {{act.offset.minutes}} Minuten
+                        </span>
+                        {{act.offset.after ? 'später': 'früher'}}
+                    </div>
+                    <div class="ml-auto" *ngIf="act.activeInterval">
+                        jede {{act.number}} {{act.unit}}
+                    </div>
                 </li>
             </ul>
         </div>

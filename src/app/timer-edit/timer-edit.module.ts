@@ -16,6 +16,7 @@ import { TimerEditComponent
          ,TimerDeviceComponent
          ,TimerAlertComponent
          ,TimerRoomComponent
+        //  ,TimerConditionVariableComponent
        }                            from './timer-edit.component';
 import { NgbModule }                from '@ng-bootstrap/ng-bootstrap';
 
@@ -30,13 +31,13 @@ export class ObjNgFor implements PipeTransform {
 
 @NgModule({
     declarations: [
-        // TimerEditModule,
          TimerEditComponent
         ,ObjNgFor
         ,TimerGroupComponent
         ,TimerDeviceComponent
         ,TimerAlertComponent
         ,TimerRoomComponent
+        // ,TimerConditionVariableComponent
     ],
     imports: [
         CommonModule,
@@ -54,7 +55,12 @@ export class ObjNgFor implements PipeTransform {
         ])
     ],
     exports: [
-        TimerEditComponent
+         TimerEditComponent
+        ,ObjNgFor
+        ,TimerGroupComponent
+        ,TimerDeviceComponent
+        ,TimerAlertComponent
+        ,TimerRoomComponent
     ],
     providers: [
         SocketService
@@ -64,4 +70,4 @@ export class ObjNgFor implements PipeTransform {
         TimerEditComponent
     ]
 })
-export default class TimerEditModule {}
+export class TimerEditModule {}

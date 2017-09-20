@@ -1,0 +1,19 @@
+.alerts{
+	z-index:1031;
+	/* position: fixed; */
+	position: absolute;
+	top: 0px;
+    right: 0px;
+    height: 100%;
+	background:rgba(0, 0, 0, 0.6);
+    overflow: auto;
+    padding: 10px;
+}
+.alerts ul{
+    position: relative;
+    min-width: 45%;
+}
+li {
+    list-style-type: none; 
+    margin-bottom: 1em;
+}

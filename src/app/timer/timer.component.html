@@ -62,10 +62,10 @@
                 <ul class="list-group list-group-flush">
                     <div class="" *ngFor="let action of timer.actions | ObjNgFor">
                         <li class="list-group-item" *ngFor="let act of action; index as i;" [ngSwitch]="act.type">
-                                <app-timer-alert class="w-100" *ngSwitchCase="'alerts'" [index]="i" [action]="act" [timer]="timer"></app-timer-alert>
-                                <app-timer-device class="w-100" *ngSwitchCase="'devices'" [index]="i" [action]="act" [timer]="timer"></app-timer-device>
-                                <app-timer-group class="w-100" *ngSwitchCase="'groups'" [index]="i" [action]="act" [timer]="timer"></app-timer-group>
-                                <div  *ngSwitchDefault>Sonstiges:{{act | json}}</div>
+                            <app-timer-alert class="w-100" *ngSwitchCase="'alerts'" [index]="i" [action]="act" [timer]="timer"></app-timer-alert>
+                            <app-timer-device class="w-100" *ngSwitchCase="'devices'" [index]="i" [action]="act" [timer]="timer"></app-timer-device>
+                            <app-timer-group class="w-100" *ngSwitchCase="'groups'" [index]="i" [action]="act" [timer]="timer"></app-timer-group>
+                            <div  *ngSwitchDefault>Sonstiges:{{act | json}}</div>
                         </li>
                     </div>
                     <li class="list-group-item" *ngIf="timer.edit">

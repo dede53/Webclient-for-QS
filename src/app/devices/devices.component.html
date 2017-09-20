@@ -1,33 +1,65 @@
-<div class="card">
+<!-- <div class="card">
     <div class="card-block">
         <h3>Geräte</h3>
         <ngb-accordion [closeOthers]="true" activeIds="static-1">
-        <ngb-panel id="{{room.room.id}}" *ngFor="let room of globalVar.user.devices | ObjNgFor">
-            <ng-template ngbPanelTitle>
-                    <div class="d-flex justify-content-end">
-                        <div class="devicename" style="text-overflow:ellipsis; overflow:hidden;cursor:pointer; margin:auto auto auto 0 !important;">
-                                {{room.room.name}}
+            <ngb-panel id="{{room.room.id}}" *ngFor="let room of globalVar.user.devices | ObjNgFor">
+                <ng-template ngbPanelTitle>
+                        <div class="d-flex justify-content-end">
+                            <div class="devicename">
+                                    {{room.room.name}}
+                            </div>
+                            <div class="btnRight">
+                                <button  class="btnOn unselectable" id="btnOn{{room.id}}"  (click)='switchRoom($event, {"room":room.room,"status":"1"})' >An</button>
+                                <button class="btnOff unselectable" id="btnOff{{room.id}}" (click)='switchRoom($event, {"room":room.room,"status":"0"})' >Aus</button>
+                            </div>
                         </div>
-                        <div style="display: flex; height:40px;">
-                            <button  class="btnOn unselectable" id="btnOn{{room.id}}" (click)='switchRoom($event, {"room":room.room,"status":"1"})' >An</button>
-                            <button class="btnOff unselectable" id="btnOff{{room.id}}" (click)='switchRoom($event, {"room":room.room,"status":"0"})' >Aus</button>
-                        </div>
-                    </div>
-            </ng-template>
-            <ng-template ngbPanelContent>
-                    <ul class="list-group">
-                        <div
-                            class="" 
-                            *ngFor="let device of room.roomdevices| ObjNgFor"
-                            [ngSwitch]="device.protocol"
+                </ng-template>
+                <ng-template ngbPanelContent>
+                        <ul class="list-group">
+                            <div
+                                class="" 
+                                *ngFor="let device of room.roomdevices| ObjNgFor"
+                                [ngSwitch]="device.protocol"
                             >
-                            <div *ngSwitchCase="'onewire'"></div>
-                            <app-shutter *ngSwitchCase="'homegear:shutter'" [device]="device"></app-shutter>
-                            <app-switch-button *ngSwitchDefault [device]="device"></app-switch-button>
-                        </div>
-                    </ul>
-            </ng-template>
-        </ngb-panel>
+                                <div *ngSwitchCase="'onewire'"></div>
+                                <app-shutter *ngSwitchCase="'homegear:shutter'" [device]="device"></app-shutter>
+                                <app-switch-button *ngSwitchDefault [device]="device"></app-switch-button>
+                            </div>
+                        </ul>
+                </ng-template>
+            </ngb-panel>
         </ngb-accordion>
     </div>
+</div> -->
+<div id="accordion">
+	<h3>
+		Geräte
+	</h3>
+	<div class="card mb-1" *ngFor="let room of globalVar.user.devices | ObjNgFor">
+		<div class="card-header pl-1 pr-0 py-0">
+			<div class="d-flex justify-content-between">
+				<a (click)="room.room.isCollapsed = !room.room.isCollapsed"
+                    [attr.aria-expanded]="!room.room.isCollapsed" aria-controls="collapseExample" class="devicename">
+					{{room.room.name}}
+                </a>
+				<div class="">
+                    <button class="btnOn" id="btnOn{{room.room.id}}" (click)='switchRoom($event, {"room":room.room,"status":"1"})' >An</button><button class="btnOff" id="btnOff{{room.room.id}}" (click)='switchRoom($event, {"room":room.room,"status":"0"})' >Aus</button>
+				</div>
+            </div>
+		</div>
+		<div id="collapse{{room.room.id}}" [ngbCollapse]="room.room.isCollapsed" class="card-block collapse py-0 pl-1 pr-0">
+			<ul class="list-group list-group-flush">
+                <li
+                    class="" 
+                    *ngFor="let device of room.roomdevices| ObjNgFor"
+                    [ngSwitch]="device.protocol"
+                >
+                    <div *ngSwitchCase="'onewire'"></div>
+                    <app-dimmer *ngSwitchCase="'homegear:dimmer'" [device]="device"></app-dimmer>
+                    <app-shutter *ngSwitchCase="'homegear:shutter'" [device]="device"></app-shutter>
+                    <app-switch-button *ngSwitchDefault [device]="device"></app-switch-button>
+                </li>
+			</ul>
+		</div>
+	</div>
 </div>

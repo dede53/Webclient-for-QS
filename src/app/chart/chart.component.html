@@ -1,0 +1,40 @@
+<div class="card">
+    <div class="card-block test d-flex justify-content-end">
+        
+        <h3 class="mr-auto">Chart</h3>
+        <div class="">
+            <div class="input-group justify-content-end">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-secondary" (click)="getTempHistory(24)" [ngClass]="{active:globalVar.activeUser.chartHour === 24}" aria-pressed="false" autocomplete="off" checked>24h</button>
+                </span>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-secondary" (click)="getTempHistory(48)" [ngClass]="{active:globalVar.activeUser.chartHour === 48}" aria-pressed="false" autocomplete="off" checked>48h</button>
+                </span>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-secondary" (click)="getTempHistory(96)" [ngClass]="{active:globalVar.activeUser.chartHour === 96}" aria-pressed="false" autocomplete="off" checked>96h</button>
+                </span>
+                <input type="number" class="form-control numberInput" min="0" [(ngModel)]="hours">
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button" (click)="getTempHistory(hours)">Los!</button>
+                </span>
+                <span class="input-group-btn">
+                    <i class="material-icons btn btn-secondary" title="Reset Zoom" (click)="this.globalVar.user.chart.zoomOut()">zoom_out</i>
+                    <!-- <button class="btn btn-secondary" type="button" (click)="getTempHistory(hours)"> -->
+                    <!-- </button> -->
+                </span>
+            </div>
+        </div>
+    </div>
+    <chart *ngIf="!globalVar.user.hideChart" [options]="globalVar.user.chartOptions" (load)="saveInstance($event.context)"></chart> 
+    <div *ngIf="globalVar.activeUser.varChart.length == 0" class="card-block">
+        <!-- <div *ngIf="globalVar.user.hideChart && globalVar.activeUser.varChart.length > 0" role="alert" class="alert alert-info"> -->
+            <!-- Unterumständen keine Daten verfügbar. Ist die speicher-Funktion der Variablen aktiviert? -->
+        <!-- </div> -->
+        <div role="alert" class="alert alert-info">
+            Du hast in den Einstellungen keine Datenpunkte für das Diagram ausgewählt.
+        </div>
+    </div>
+    <!-- <chart [options]="globalVar.user.chartOptions" (load)="saveInstance($event.context)"></chart>  -->
+    <!-- <chart *ngIf="globalVar.activeUser.varChart.length > 0" [options]="globalVar.user.chartOptions" (load)="saveInstance($event.context)"></chart>  -->
+    <!-- <chart [options]="globalVar.user.chartOptions" type="StockChart"></chart> -->
+</div>

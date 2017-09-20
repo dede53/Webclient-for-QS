@@ -18,7 +18,7 @@ export class CountdownsComponent implements OnInit {
     this.myForm = this._fb.group({
         time: [2],
         device: ['', Validators.required],
-        status: [0]
+        status: 0
     });
     }
     add(countdown, valid){
@@ -28,8 +28,8 @@ export class CountdownsComponent implements OnInit {
             this.socket.emit("countdowns:add", {user: this.globalVar.activeUser , add: countdown});
         }
     }
-    remove(id){
-        console.log(id);
-        this.socket.emit("countdowns:remove", {user: this.globalVar.activeUser, remove: id});
+    remove(data){
+        console.log(data);
+        this.socket.emit("countdowns:remove", {user: this.globalVar.activeUser, remove: data});
     }
 }

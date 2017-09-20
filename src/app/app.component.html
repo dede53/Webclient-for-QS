@@ -1,20 +1,23 @@
 <!--<div (window:keydown)="onKey($event)">-->
     <nav class="navbar navbar-toggleable-md navbar-light bg-faded fixed-top" style="background-color: #ddf;">
-        <a class="navbar-brand" routerLink="home" (click)="toogleFav(showFav)">
+        <a class="navbar-brand" (click)="toogleFav(showFav)">
             <img src="favicon.ico" width="35" height="35" alt="">
         </a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="home">
+                    <a class="nav-link" routerLink="home" routerLinkActive="nav-link-active">
                         Home
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="devices">Geräte</a>
+                    <a class="nav-link" routerLink="devices" routerLinkActive="nav-link-active">Geräte</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="timers">Timer</a>
+                    <a class="nav-link" routerLink="timers" routerLinkActive="nav-link-active">Timer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="chart" routerLinkActive="nav-link-active">Chart</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/settings">Einstellungen</a>
@@ -42,16 +45,17 @@
         <app-favorit-devices></app-favorit-devices>
         <app-active-devices></app-active-devices>
     </div>
+    <app-alerts class="w-100"></app-alerts>
     <div  class="content" [class.favoritmenu]="showFav">
         <router-outlet></router-outlet>
     </div>
     <div class="bg"></div>
     <div class="loaderBg" *ngIf="loading">
         <div class="loader">
-            <p class="">Verbinde zum Server...</p>
             <div class="outer mx-auto">
                 <div class="inner"></div>
             </div>
+            <p class="">Verbinde zum Server...</p>
         </div>
     </div>
     <!--<div class="loaderBg">

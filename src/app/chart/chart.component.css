@@ -1,0 +1,14 @@
+.numberInput{
+    max-width:80px;
+    min-width:80px;
+}
+
+chart {
+    display: block;
+    height: 500px;
+}
+.test{
+	-webkit-flex-flow: row wrap;
+	-ms-flex-flow: row wrap;
+	flex-flow: row wrap;
+}

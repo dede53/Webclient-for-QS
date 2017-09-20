@@ -1,0 +1,20 @@
+<div class="card">
+    <div class="card-block">
+        <h3>Info</h3>
+        <ul>
+            <li *ngFor="let variable of globalVar.user.favoritVariables | ObjNgFor">
+                <p class="d-flex justify-content-between">
+                    <span class="">
+                        {{variable.name}}
+                    </span>
+                    <span title="{{variable.lastChange | date:'EEE, d. MMM., HH:mm'}}">
+                        {{variable.status}}{{variable.suffix}}
+                    </span>
+                </p>
+            </li>
+            <li *ngIf="globalVar.user.favoritVariables | isEmpty" role="alert" class="alert alert-info">
+                Du hast noch keine Variablen zur Anzeige ausgewählt! Füge sie deinem Benutzer in den <a href="/settings/#/user" class="alert-link">Einstellungen</a> hinzu. 
+            </li>
+        </ul>
+    </div>
+</div>

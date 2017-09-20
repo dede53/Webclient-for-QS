@@ -1,6 +1,6 @@
 <div class="card mb-3">
     <div class="card-header">
-        <input [(ngModel)]="timer.name" class="form-control">
+        <input [(ngModel)]="timer.name" class="form-control" placeholder="Name">
     </div>
     <div class="card-block">
         <div class="card">
@@ -8,23 +8,25 @@
                 Variablen/Events
             </div>
             <ul class="list-group list-group-flush">
+                <li *ngIf="!timer.variables != false" class="list-group-item list-group-item-info">
+                    Noch keine Variable hinzugefügt!
+                </li>
                 <div *ngFor="let variable of timer.variables | ObjNgFor">
                     <div *ngFor="let variab of variable; index as i;">
                         <li class="list-group-item d-flex justify-content-start">
                             Löse aus sobald die Variable 
-                            <i class="ml-auto material-icons" (click)="removeVariable(variab.id, i)">delete</i>
+                            <i class="ml-auto material-icons" title="Variable entfernen" (click)="removeVariable(variab.id, i)">delete</i>
                             <select name="variable" [(ngModel)]="variab.id" class="form-control">
                                 <option *ngFor="let type of variables | ObjNgFor" [ngValue]="type.id">{{type.name}}({{type.id}})</option>
                             </select>
                             <select name="variableMode" [(ngModel)]="variab.mode" class="form-control">
                                 <option *ngFor="let mode of variableModes" [ngValue]="mode.value">{{mode.name}}</option>
                             </select>
-                            <input type="text" class="form-control" [(ngModel)]="variab.value">
-
+                            <input *ngIf="variab.mode != 'onChange'" type="text" class="form-control" [(ngModel)]="variab.value">
                         </li>
                     </div>
                 </div>
-                 <li class="list-group-item">
+                <li class="list-group-item">
                     <form class="form-inline">
                         <select name="addVariableType" [(ngModel)]="addVariableType" class="form-control mr-sm-2">
                             <option value="false" disabled>Wähle eine Variable</option>
@@ -43,13 +45,18 @@
                 Bedingungen
             </div>
             <ul class="list-group list-group-flush">
+                <li *ngIf="timer.conditions.length == 0" class="list-group-item list-group-item-info">
+                    Noch keine Bedingungen hinzugefügt!
+                </li>
                 <div *ngIf="!timer.conditions == false">
-                    <li class="list-group-item d-flex justify-content-start" *ngFor="let con of timer.conditions" [ngSwitch]="con.type">
+                    <li class="list-group-item d-flex justify-content-start" *ngFor="let con of timer.conditions; index as i;" [ngSwitch]="con.type">
                         <div *ngSwitchCase="'random'" class="d-flex">
                             Zufällig zwischen <ngb-timepicker [(ngModel)]="con.start" [spinners]="false"></ngb-timepicker> und <ngb-timepicker [(ngModel)]="con.stop" [spinners]="false"></ngb-timepicker>
                         </div>
-                        <div *ngSwitchCase="'variable'" class="w-100">
-                            Löse aus sobald die Variable
+                        <!-- <TimerConditionVariable *ngSwitchCase="'variable'"></TimerConditionVariable> -->
+                        <!-- <app-timer-condition-variable *ngSwitchCase="'variable'"></app-timer-condition-variable> -->
+                        <div *ngSwitchCase="'variable'" class="">
+                            Wenn die Variable
                             <select name="variable" [(ngModel)]="con.id" class="form-control">
                                 <option *ngFor="let type of variables | ObjNgFor" [ngValue]="type.id">{{type.name}}({{type.id}})</option>
                             </select>
@@ -58,12 +65,86 @@
                             </select>
                             <input type="text" class="form-control" [(ngModel)]="con.value">
                         </div>
-                        <div *ngSwitchCase="'sun'">{{con.sun}} {{con.offset.unit}}{{con.offset.minutes}} {{con.offset.min}} {{con.offset.max}}</div> 
-                        <div *ngSwitchCase="'range'"  class="d-flex">
+                        <div *ngSwitchCase="'time'" class="d-flex">
+                            Um <ngb-timepicker [(ngModel)]="con.time" [spinners]="false"></ngb-timepicker>
+                        </div>
+                        <div *ngSwitchCase="'sun'" class="d-flex">
+                            <select name="con.sun" [(ngModel)]="con.sun" class="form-control">
+                                <option value="sunrise">Sonnenaufgang</option>
+                                <option value="sunset">Sonnenuntergang</option>
+                            </select>
+                            <ng-template #popContent>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" [(ngModel)]="con.offset.active" type="checkbox">
+                                        Zeitverschiebung nach
+                                    </label>
+                                </div>
+                                <div *ngIf="con.offset.active">
+                                    <div class="btn-group" ngbRadioGroup name="radioBasic" [(ngModel)]="con.offset.random">
+                                        <label ngbButtonLabel class="btn-sm btn-secondary">
+                                          <input ngbButton type="radio" [value]="true">Zufall
+                                        </label>
+                                        <label ngbButtonLabel class="btn-sm btn-secondary">
+                                          <input ngbButton type="radio" [value]="false">fest Vorgegeben
+                                        </label>
+                                    </div>
+                                    <div class="btn-group" ngbRadioGroup name="type" [(ngModel)]="con.offset.after">
+                                        <label ngbButtonLabel class="btn btn-sm btn-secondary">
+                                            <input ngbButton type="radio" [value]="true">hinten
+                                        </label>
+                                        <label ngbButtonLabel class="btn btn-sm btn-secondary">
+                                            <input ngbButton type="radio" [value]="false">vorne
+                                        </label>
+                                    </div>
+                                    <div class="form-group" *ngIf="con.offset.random">
+                                        <label for="formGroupExampleInput2">Minimale Zeitverschiebung:</label>
+                                        <input type="number" class="form-control" min="0" max="{{con.offset.max - 1}}" [(ngModel)]="con.offset.min" id="formGroupExampleInput2" placeholder="1">
+                                    </div>
+                                    <div class="form-group" *ngIf="con.offset.random">
+                                        <label for="formGroupExampleInput2">Maximale Zeitverschiebung:</label>
+                                        <input type="number" class="form-control" min="{{con.offset.min + 1}}" [(ngModel)]="con.offset.max" id="formGroupExampleInput2" placeholder="18">
+                                    </div>
+                                    <div class="form-group" *ngIf="!con.offset.random">
+                                        <label for="formGroupExampleInput2">Minuten:</label>
+                                        <input type="number" class="form-control" min="0" [(ngModel)]="con.offset.minutes" id="formGroupExampleInput2" placeholder="18">
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <div class="red" [ngbPopover]="popContent" placement="left" popoverTitle="Einstellungen">
+                                <i class="material-icons points">more_vert</i>
+                            </div>
+                        </div> 
+                        <div *ngSwitchCase="'range'"  class="d-flex" title="Zeitverschiebung">
                             Von <ngb-timepicker [(ngModel)]="con.start" [spinners]="false"></ngb-timepicker> bis <ngb-timepicker [(ngModel)]="con.stop" [spinners]="false"></ngb-timepicker>
                         </div>
+                        <div *ngSwitchCase="'weekdays'" class="d-flex">
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-secondary" ngbButtonLabel>
+                                    <input type="checkbox" ngbButton [(ngModel)]="con.weekdays['1']">Montag
+                                </label>
+                                <label class="btn btn-secondary" ngbButtonLabel>
+                                    <input type="checkbox" ngbButton [(ngModel)]="con.weekdays['2']">Dienstag
+                                </label>
+                                <label class="btn btn-secondary" ngbButtonLabel>
+                                    <input type="checkbox" ngbButton [(ngModel)]="con.weekdays['3']">Mittwoch
+                                </label>
+                                <label class="btn btn-secondary" ngbButtonLabel>
+                                    <input type="checkbox" ngbButton [(ngModel)]="con.weekdays['4']">Donnerstag
+                                </label>
+                                <label class="btn btn-secondary" ngbButtonLabel>
+                                    <input type="checkbox" ngbButton [(ngModel)]="con.weekdays['5']">Freitag
+                                </label>
+                                <label class="btn btn-secondary" ngbButtonLabel>
+                                    <input type="checkbox" ngbButton [(ngModel)]="con.weekdays['6']">Samstag
+                                </label>
+                                <label class="btn btn-secondary" ngbButtonLabel>
+                                    <input type="checkbox" ngbButton [(ngModel)]="con.weekdays['0']">Sonntag
+                                </label>
+                            </div>
+                        </div>
                         <div *ngSwitchDefault>{{con | json}}</div>
-                        <i class="ml-auto material-icons" (click)="removeCondition(i)">delete</i>
+                        <i class="ml-auto material-icons" title ="Bedingung entfernen" (click)="removeCondition(i)">delete</i>
                     </li>
                 </div>
                 <li class="list-group-item">
@@ -81,17 +162,86 @@
         </div>
         <br>
         <div class="card">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between">
                 Aktionen
+                <i (click)='switchAll("timers", timer)' title="Aktionen zum testen jetzt ausführen!" class="material-icons">play_circle_outline</i>
             </div>
             <ul class="list-group list-group-flush">
+                <li *ngIf="timer.actions.length == 0" class="list-group-item list-group-item-info">
+                        Noch keine Aktionen hinzugefügt!
+                </li>
                 <li class="list-group-item d-flex justify-content-start" *ngFor="let act of  timer.actions; index as i;" [ngSwitch]="act.type">
                         <app-timer-device *ngSwitchCase="'device'" [action]="act"></app-timer-device>
                         <app-timer-group *ngSwitchCase="'group'" [action]="act"></app-timer-group>
                         <app-timer-alert *ngSwitchCase="'alert'" [action]="act"></app-timer-alert>
                         <app-timer-room *ngSwitchCase="'room'" [action]="act"></app-timer-room>
+                        <div *ngSwitchCase="'setVariable'">
+                            <select name="variable" [(ngModel)]="act.action" class="form-control">
+                                <option *ngFor="let type of variables | ObjNgFor" [ngValue]="type">{{type.name}}({{type.id}})</option>
+                            </select>
+                            <input type="text" class="form-control" [(ngModel)]="act.action.status">
+                        </div>
+                        <div *ngSwitchCase="'url'" class="w-50">Url: <input class="w-75" type="text" [(ngModel)]="act.action.url" placeholger="http://ifttt.de"></div>
                         <div  *ngSwitchDefault>{{act.type}}:{{act | json}}</div>
-                        <i class="ml-auto material-icons" (click)="removeAction(i)">delete</i>
+                        <div class="ml-auto d-flex">
+                            <div class="form-check">
+                                Interval:
+                                    <label class="form-check-label"> 
+                                    <input class="form-check-input" [(ngModel)]="act.activeInterval" type="checkbox">
+                                    </label> 
+                            </div>
+                            <input type="number" [(ngModel)]="act.number" *ngIf="act.activeInterval">
+                            <select [(ngModel)]="act.unit" *ngIf="act.activeInterval">
+                                <option value="sec">Sekunden</option>
+                                <option value="min">Minuten</option>
+                                <option value="hour">Stunden</option>
+                                <option value="day">Tag</option>
+                                <option value="day of the week">Tag der Woche</option>
+                                <option value="day of the month">Tag des Monats</option>
+                            </select>
+                            <ng-template #popContent>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" [(ngModel)]="act.offset.active" type="checkbox">
+                                        Zeitverschiebung nach
+                                    </label>
+                                </div>
+                                <div *ngIf="act.offset.active">
+                                    <div class="btn-group" ngbRadioGroup name="radioBasic" [(ngModel)]="act.offset.random">
+                                        <label ngbButtonLabel class="btn-sm btn-secondary">
+                                          <input ngbButton type="radio" [value]="true">Zufall
+                                        </label>
+                                        <label ngbButtonLabel class="btn-sm btn-secondary">
+                                          <input ngbButton type="radio" [value]="false">fest Vorgegeben
+                                        </label>
+                                    </div>
+                                    <div class="btn-group" ngbRadioGroup name="type" [(ngModel)]="act.offset.after">
+                                        <label ngbButtonLabel class="btn btn-sm btn-secondary">
+                                            <input ngbButton type="radio" [value]="true">hinten
+                                        </label>
+                                        <label ngbButtonLabel class="btn btn-sm btn-secondary">
+                                            <input ngbButton type="radio" [value]="false">vorne
+                                        </label>
+                                    </div>
+                                    <div class="form-group" *ngIf="act.offset.random">
+                                        <label for="formGroupExampleInput2">Minimale Zeitverschiebung:</label>
+                                        <input type="number" class="form-control" min="0" max="{{act.offset.max - 1}}" [(ngModel)]="act.offset.min" id="formGroupExampleInput2" placeholder="1">
+                                    </div>
+                                    <div class="form-group" *ngIf="act.offset.random">
+                                        <label for="formGroupExampleInput2">Maximale Zeitverschiebung:</label>
+                                        <input type="number" class="form-control" min="act.offset.min + 1" [(ngModel)]="act.offset.max" id="formGroupExampleInput2" placeholder="18">
+                                    </div>
+                                    <div class="form-group" *ngIf="!act.offset.random">
+                                        <label for="formGroupExampleInput2">Minuten:</label>
+                                        <input type="number" class="form-control" min="0" [(ngModel)]="act.offset.minutes" id="formGroupExampleInput2" placeholder="18">
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <div class="red" [ngbPopover]="popContent" placement="left" popoverTitle="Einstellungen">
+                                <i class="material-icons points">more_vert</i>
+                            </div>
+                            <i class="material-icons" title="Aktion entfernen" (click)="removeAction(i)">delete</i>
+                        </div>
                 </li>
                 <li class="list-group-item">
                     <form class="form-inline">
@@ -107,9 +257,9 @@
             </ul>
         </div>
         <br>
-        <div class="d-flex justify-content-end">
-            <button class="btn btn-success" (click)="save()">speichern</button>
-            <button class="btn btn-danger" (click)="cancel()">abbrechen</button>
+        <div class="right">
+            <button class="btn btn-success" (click)="save()">Speichern</button>
+            <button class="btn btn-danger" (click)="cancel()">Abbrechen</button>
         </div>
     </div>
 </div>

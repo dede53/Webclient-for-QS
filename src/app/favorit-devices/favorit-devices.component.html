@@ -1,8 +1,15 @@
 <h3>Favoriten</h3>
-<ul class="list-group">
-	<!--<li *ngFor="let device of globalVar.user.favoritDevices">{{device}}</li>-->
-	<app-switch-button [device]="device" *ngFor="let device of globalVar.user.favoritDevices"></app-switch-button>
-<!--	<li *ngIf="favoritDevices" role="alert" class="alert alert-info">
-		Noch keine Favoriten in den <a href="/settings/#/user" class="alert-link">Einstellungen</a> gewählt.
-	</li>-->
+<ul *ngIf="globalVar.user.favoritDevices.length > 0" class="list-group">
+    <div
+        *ngFor="let device of globalVar.user.favoritDevices"
+        [ngSwitch]="device.protocol"
+    >
+        <div *ngSwitchCase="'onewire'"></div>
+        <app-dimmer *ngSwitchCase="'homegear:dimmer'" [device]="device"></app-dimmer>
+        <app-shutter *ngSwitchCase="'homegear:shutter'" [device]="device"></app-shutter>
+        <app-switch-button *ngSwitchDefault [device]="device"></app-switch-button>
+    </div>
 </ul>
+<div *ngIf="globalVar.user.favoritDevices.length == 0" role="alert" class="alert alert-info">
+    Noch keine Favoriten in den <a href="/settings/#/user" class="alert-link">Einstellungen</a> gewählt.
+</div> 

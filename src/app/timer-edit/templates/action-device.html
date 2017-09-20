@@ -1,5 +1,5 @@
 <select [(ngModel)]="action.action">
-    <option disabled value="{}">Wähle ein Gerät</option>
+    <option disabled value="[object Object]">Wähle ein Gerät</option>
     <option *ngFor="let device of devicelist | ObjNgFor" [ngValue]="device">
         {{device.name}} ({{device.Raum}})
     </option>

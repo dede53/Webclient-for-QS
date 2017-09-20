@@ -7,6 +7,8 @@ export class ObjNgFor implements PipeTransform {
     transform(value: any, args: any[] = null): any {
       if(value){
         return Object.keys(value).map(key => value[key]);
+      }else{
+          return;
       }
     }
 }
@@ -57,34 +59,36 @@ export class TimerTime implements PipeTransform {
 
 @Pipe({name:'isEmpty', pure: false})
 export class isEmpty implements PipeTransform{
-    transform(value: any, args: any[] = null): any {
+    transform(value: any, args: boolean): boolean {
+            var result = true;
             for (let bar in value) {
                 if (value.hasOwnProperty(bar)) {
-                    return false;
+                    result = false;
                 }
             }
-            return true;
+            if(args){
+                return !result;
+            }else{
+                return result;
+            }
     }
 }
 
 @Component({
-  selector: 'app-devices',
-  templateUrl: './devices.component.html',
-  styleUrls: ['./devices.component.css']
+    selector: 'app-devices',
+    templateUrl: './devices.component.html',
+    styleUrls: ['./devices.component.css']
 })
 export class DevicesComponent implements OnInit {
-
-  constructor (private socket: SocketService, public globalVar: GlobalObjectsService) {}
-  ngOnInit() {
-    this.socket.emit('devices:get', "");
-  }
-  switchRoom(event: Event, data){
-    event.preventDefault();
-    console.log("Raum schalten!");
-    console.log(data);
-    this.socket.emit("rooms:switch", {switch: data});
-    event.stopPropagation();
-  }
+    constructor (private socket: SocketService, public globalVar: GlobalObjectsService) {}
+    ngOnInit() {
+        this.socket.emit('devices:get', "");
+    }
+    switchRoom(event: Event, data){
+        event.preventDefault();
+        this.socket.emit("rooms:switch", {switch: data});
+        event.stopPropagation();
+    }
 }
 
 

@@ -1,0 +1,54 @@
+<div class="test d-flex justify-content-end">
+	<div class="mr-auto devicename">{{device.name}}</div>
+    <div class="mr-1 devicename">{{device.status * 100}}%</div>
+	<div class="d-flex" style="max-width:100%;">
+		<button
+            class="unselectable"
+            (click)="switchDevice({id: device.deviceid, status: 1})"
+			>
+			<p class="buttonLabel">
+                100%
+			</p>
+		</button>
+		<button
+			class="unselectable"
+            (click)="switchDevice({id: device.deviceid, status: 0.8})"
+			>
+			<p class="buttonLabel">
+				80%
+			</p>
+		</button>
+		<button
+			class="unselectable"
+            (click)="switchDevice({id: device.deviceid, status: 0.6})"
+			>
+			<p class="buttonLabel">
+				60%
+			</p>
+		</button>
+		<button
+			class="unselectable"
+            (click)="switchDevice({id: device.deviceid, status: 0.4})"
+			>
+			<p class="buttonLabel">
+				40%
+			</p>
+		</button>
+		<button
+			class="unselectable"
+            (click)="switchDevice({id: device.deviceid, status: 0.2})"
+			>
+			<p class="buttonLabel">
+				20%
+			</p>
+		</button>
+		<button
+			class="unselectable"
+            (click)="switchDevice({id: device.deviceid, status: 0})"
+			>
+			<p class="buttonLabel">
+				0%
+			</p>
+		</button>
+	</div>
+</div>

@@ -1,0 +1,10 @@
+<div class="w-100">
+    Löse aus sobald die Variable
+    <select name="variable" [(ngModel)]="condition.id" class="form-control">
+        <option *ngFor="let type of variables | ObjNgFor" [ngValue]="type.id">{{type.name}}({{type.id}})</option>
+    </select>
+    <select name="variableMode" [(ngModel)]="condition.mode" class="form-control">
+        <option *ngFor="let mode of variableModes" [ngValue]="mode.value">{{mode.name}}</option>
+    </select>
+    <input type="text" class="form-control" [(ngModel)]="condition.value">
+</div>

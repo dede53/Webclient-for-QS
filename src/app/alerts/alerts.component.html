@@ -1,0 +1,25 @@
+<div *ngIf="globalVar.user.alerts | isEmpty:true" class="alerts w-100 d-flex justify-content-end">
+    <ul>
+        <li *ngFor="let alert of globalVar.user.alerts | ObjNgFor" (click)="remove(alert)">
+            <div class="card card-{{alert.type}}">
+                <div class="card-header d-flex justify-content-between">
+                    <span class="card-text">
+                        {{alert.title}}
+                    </span>
+                    <p class="pull-right card-text">
+                        {{alert.date | date:'dd.MMM., H:mm'}}
+                    </p>
+                </div>
+                <p class="card-block card-text text-xs-center">
+                    {{alert.message}}
+                </p>
+            </div>
+        </li>
+    </ul>
+    <div class="p-2 ml-auto d-flex justify-content-end fixed-bottom">
+        <!-- <button class="btn btn-success" (click)="removeAll()">
+            Alle Entfernen
+        </button> -->
+        <i class="material-icons md-62 text-white" title="Alle Alerts entfernen" (click)="removeAll()">delete</i>
+    </div>
+</div>

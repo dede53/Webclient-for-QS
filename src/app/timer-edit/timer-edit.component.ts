@@ -20,28 +20,19 @@ export class TimerEditComponent implements OnInit {
         {value:"device", name:"Gerät"},
         {value:"group", name:"Gruppe"},
         {value:"room", name:"Raum"},
-        {value:"alert", name:"Alert"}
+        {value:"alert", name:"Alert"},
+        {value:"url", name:"Url aufrufen"},
+        {value:"setVariable", name:"Variablen Wert setzen"},
+		{value:"pushbullets", name:"Pushbulletbenachrichigung"}
     ]
     id:number;
-    timer:Timer = {
-        name:"",
-        id:undefined,
-        variables: false,
-        conditions:[],
-        actions:[],
-        user: this.globalVar.activeUser.name
-    }
+    timer:Timer;
+    
     addActionType = "false";
     addVariableType = "false";
     addConditionType = "false";
     variables: Array<object>;
     ngOnInit() {
-        this.socket.emit("variables:get", "");
-        this.socket.on("variables", data => {
-            if(data.type == "get"){
-                this.variables = data.get;
-            }
-        });
         this.id = parseInt(this.route.snapshot.paramMap.get('id')) || undefined;
         if(this.id){
             this.socket.emit("timers:get", {"get":this.id});
@@ -51,42 +42,79 @@ export class TimerEditComponent implements OnInit {
                     this.timer = data[data.type];
                 }
             });
+        }else{
+            this.timer = {
+                name:"",
+                id:undefined,
+                variables: false,
+                conditions:[],
+                actions:[],
+                user: this.globalVar.activeUser.name
+            }
         }
+        this.socket.emit("variables:get", "");
+        this.socket.on("variables", data => {
+            if(data.type == "get"){
+                this.variables = data.get;
+            }
+        });
     }
 
     addAction(type){
-        if(!this.timer.actions){
-            this.timer.actions = [];
+        if(type  != "false"){
+            if(!this.timer.actions){
+                this.timer.actions = [];
+            }
+            this.timer.actions.push({
+                type: type,
+                activeInterval: false,
+                unit: "min",
+                number: 5,
+                switchstatus: false,
+                action: {},
+                offset:{
+                    active:false,
+                    random: false,
+                    after:true,
+                    min:2,
+                    max:5,
+                    minutes:4
+                }
+            });
         }
-        this.timer.actions.push({
-            type: type,
-            activeInterval: false,
-            activeTimeout: false,
-            timeout: 0,
-            switchstatus: false,
-            action: {}
-        });
     }
     addVariable(id){
-        if(!this.timer.variables){
-            this.timer.variables = {};
+        if(id != "false"){
+            if(!this.timer.variables){
+                this.timer.variables = {};
+            }
+            if(!this.timer.variables[id]){
+                this.timer.variables[id] = [];
+            }
+            this.timer.variables[id].push({
+                id:id,
+                mode:"onChange"
+            });
         }
-        if(!this.timer.variables[id]){
-            this.timer.variables[id] = [];
-        }
-        this.timer.variables[id].push({
-            id:id,
-            mode:"onChange"
-        });
     }
     addCondition(type){
-        if(!this.timer.conditions){
-            this.timer.conditions = [];
+        if(type != "false"){
+            if(!this.timer.conditions){
+                this.timer.conditions = [];
+            }
+            this.timer.conditions.push({
+                type:type,
+                offset:{
+                    active:false,
+                    random: false,
+                    after:true,
+                    min:2,
+                    max:5,
+                    minutes:4
+                },
+                weekdays:[false,false,false,false,false,false,false]
+            });
         }
-        this.timer.conditions.push({
-            type:type,
-            offset:{}
-        });
     }
     removeAction(index){
         this.timer.actions.splice(index, 1);
@@ -96,14 +124,28 @@ export class TimerEditComponent implements OnInit {
     }
     removeVariable(id, index){
         this.timer.variables[id].splice(index, 1);
+        if(this.timer.variables[id].length == 0){
+            delete this.timer.variables[id];
+        }
+        for(let index in this.timer.variables){
+            if (this.timer.variables.hasOwnProperty(index)) {
+                return;
+            }
+        }
+        this.timer.variables = false;
     }
     save(){
+        console.log(this.timer);
         this.socket.emit('timers:save', {user:this.globalVar.activeUser, save: this.timer});
         this.router.navigate(['/timers']);
     }
     cancel(){
         this.router.navigate(['/timers']);
     }
+
+	switchAll = function(type, data){
+		this.socket.emit(type + ':switchAll', {user:this.globalVar.activeUser, switchAll: data});	
+	}
     variableModes = [
         {value:"match", name:"match (deprected)"},
         {value:"onChange", name:"sich ändert (onChange)"},
@@ -119,7 +161,8 @@ export class TimerEditComponent implements OnInit {
         {value:"sun", name:"Sonnenaufgang/Untergang"},
         {value:"random", name:"Zufälliger Zeitpunkt in einem Zeitraum"},
         {value:"variable", name:"Wert einer Variable"},
-        {value:"time", name:"Zeit"}
+        {value:"time", name:"Zeit"},
+        {value:"weekdays", name:"Wochentage"}
     ]
 }
 
@@ -214,3 +257,20 @@ export class TimerRoomComponent{
         });
     }
 }
+
+// @Component({
+//     selector: 'app-timer-condition-variable',
+//     styleUrls: ['./timer-edit.component.css'],
+//     templateUrl: './templates/condition-variable.html'
+// })
+// export class TimerConditionVariableComponent{
+//     @Input() condition: any;
+//     constructor(
+//         private socket: SocketService,
+//         public globalVar: GlobalObjectsService
+//     ){}
+//     devices = {};
+//     variables: Array<object>;
+//     ngOnInit(){
+//     }
+// }

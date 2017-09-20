@@ -6,7 +6,7 @@
         <ul class="list-group" style="max-height:230px; overflow:auto;">
             <li class="list-group-item d-flex justify-content-start" *ngFor="let countdown of globalVar.user.countdowns | ObjNgFor">
                 <span>{{countdown.device.name}} ({{countdown.device.Raum}}) um {{countdown.time | date:'HH:mm'}} {{countdown.status ? countdown.device.buttonLabelOn :  countdown.device.buttonLabelOff}}</span>
-                <button class="btn btn-sm btn-danger ml-auto" (click)="remove(countdown.id)" >Löschen</button>
+                <button class="btn btn-sm btn-danger ml-auto" (click)="remove(countdown)" >Löschen</button>
                 
             </li>
             <li class="list-group-item list-group-item-info" *ngIf="globalVar.user.countdowns | isEmpty">
@@ -38,12 +38,12 @@
                     aria-describedby="btnGroupAddon2">
             </div>
             <br>
-            <div class="btn-group btn-group-sm" ngbRadioGroup formControlName="status" role="group" *ngIf="myForm.value.device.buttonLabelOn">
-                <label class="btn btn-secondary">
-                    <input type="radio" [value]="1">{{myForm.value.device.buttonLabelOn}}
+            <div class="btn-group btn-group-sm" ngbRadioGroup name="radioBasic" formControlName="status">
+                <label ngbButtonLabel class="btn-secondary">
+                    <input ngbButton type="radio" [value]="1"> An
                 </label>
-                <label class="btn btn-secondary">
-                    <input type="radio" [value]="0">{{myForm.value.device.buttonLabelOff}}
+                <label ngbButtonLabel class="btn-secondary">
+                    <input ngbButton type="radio" [value]="0"> Aus
                 </label>
             </div>
             <label class="btn-group btn-group-sm">

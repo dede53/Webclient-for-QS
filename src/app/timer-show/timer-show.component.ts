@@ -10,6 +10,20 @@ import { SocketService } from "app/app.service";
 export class TimerShowComponent{
     @Input() timer: any;
     constructor(
-        public globalVar: GlobalObjectsService ) {
+        public globalVar: GlobalObjectsService,
+        private socket: SocketService
+    ) {
     }
+    weekdays = [
+        "Sonntag",
+        "Montag",
+        "Dienstag",
+        "Mittwoch",
+        "Donnerstag",
+        "Freitag",
+        "Samstag"
+    ]
+	switchAll = function(type, data){
+		this.socket.emit(type + ':switchAll', {user:this.globalVar.activeUser, switchAll: data});	
+	}
 }

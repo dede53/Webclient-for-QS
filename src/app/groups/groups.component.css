@@ -7,8 +7,14 @@ ul, ol{
 .devicename{
 	white-space: nowrap; 
 	text-align: inherit;
-	margin: auto 0;
-	color: #292b2c;
+    color: #292b2c;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    cursor:pointer;
+    margin:auto auto auto 0 !important;
+}
+.btnRight{
+    display: flex;
 }
 .btnOn{
 	background-color:#c0ffc0;

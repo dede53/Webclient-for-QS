@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-end">
-    <div class="devicename" (click)="timer.isCollapsed = !timer.isCollapsed"
+    <div title="Zuletzt ausgeführt: {{timer.lastexec | date:'EEE, d. MMM., HH:mm'}}" class="devicename" (click)="timer.isCollapsed = !timer.isCollapsed"
           [attr.aria-expanded]="!timer.isCollapsed" style="text-overflow:ellipsis; overflow:hidden;cursor:pointer; margin:auto auto auto 0 !important;">
         {{timer.name}}
     </div>

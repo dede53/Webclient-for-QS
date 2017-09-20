@@ -1,4 +1,4 @@
-import { Component, Pipe, PipeTransform } from '@angular/core';
+import { Component, Pipe, PipeTransform, OnInit } from '@angular/core';
 import { SocketService } from '../app.service';
 import { GlobalObjectsService } from "../app.service.global";
 
@@ -15,36 +15,26 @@ export class ChatComponent {
     message:"",
     name:"",
   };*/
-  messages = [];
   type = 1;
-  moreMessagesAvailable = true;
   message: string;
   constructor(private socket: SocketService, public globalVar: GlobalObjectsService) { }
 
-  save(){
-    console.log(this.message);
-    console.log(this.type);
-    this.socket.emit("messages:add", {
-      user: {name:"Daniel"},
-      add: {
-        message: this.message,
-        type:this.type
-      }
-    });
-  }
+    save(){
+        this.socket.emit("messages:add", {
+            user: {name: this.globalVar.activeUser.name},
+            add: {
+                message: this.message,
+                type:this.type
+            }
+        });
+        this.message = "";
+        this.type = 1;
+    }
 
-  loadOldMessages(){
-    this.socket.emit('messages:loadOld', this.globalVar.user.chatMessages[this.globalVar.user.chatMessages.length - 1 ].time);
-  }
-  ngOnInit() {
-    this.socket.emit("messages:loadOld", new Date().getTime());
-/*     this.socket.on('chatMessages', data => {
-      this.messages.splice(0, 0, data[data.type]);
-    }) */
-    this.socket.on('moreMessagesAvailable', data => {
-      this.moreMessagesAvailable = data;
-    })
-  }
+    loadOldMessages(){
+        this.socket.emit('messages:loadOld', this.globalVar.user.chatMessages[this.globalVar.user.chatMessages.length - 1 ].time);
+    }
+    ngOnInit() {}
 }
 
 /*
